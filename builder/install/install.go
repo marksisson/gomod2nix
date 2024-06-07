@@ -40,9 +40,27 @@ func main() {
 			panic(err)
 		}
 
-		cmd := exec.Command("go", "install", path)
+    pathWithVersion := path + "@latest"
+
+    varName := "GOPATH"
+    value := os.Getenv(varName)
+    if value != "" {
+      fmt.Printf("%s=%s\n", varName, value)
+    } else {
+      fmt.Printf("%s is not set\n", varName)
+    }
+    varName2 := "PWD"
+    value2 := os.Getenv(varName2)
+    if value != "" {
+      fmt.Printf("%s=%s\n", varName2, value2)
+    } else {
+      fmt.Printf("%s is not set\n", varName2)
+    }
+
+		cmd := exec.Command("go", "install", "-v", pathWithVersion)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
+    cmd.Env = os.Environ()
 
 		fmt.Printf("Executing '%s'\n", cmd)
 
